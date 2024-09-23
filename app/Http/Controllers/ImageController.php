@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
+    public function index()
+    {
+        $images = Image::all()->map(function ($image) {
+            $image->file_path = Storage::url($image->file_path);
+            return $image;
+        });
+
+        return response()->json($images);
+    }
+
     public function upload(Request $request)
     {
         $request->validate([
@@ -17,14 +27,15 @@ class ImageController extends Controller
         $file = $request->file('image');
         $name = time().'_'.$file->getClientOriginalName();
 
-        // Store the image in the `public` disk (may need to adjust based on your specific setup)
         $path = $file->storeAs('uploads', $name, 'public');
 
-        // Save the path in the database
         $image = Image::create([
             'file_name' => $name,
             'file_path' => $path,
         ]);
+
+        // Modify file_path to contain the full URL to the image
+        $image->file_path = Storage::url($image->file_path);
 
         return response()->json($image, 201);
     }
@@ -38,7 +49,6 @@ class ImageController extends Controller
             abort(404);
         }
 
-        // Use Laravel's response helpers for direct file response.
         return response()->file($path);
     }
 }

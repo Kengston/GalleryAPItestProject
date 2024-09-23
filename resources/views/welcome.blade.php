@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Vue.js App</title>
+    <title>Vue.js Integration</title>
 </head>
-<body>
-
+<body class="antialiased">
+    <div id="app">
+        <image-list></image-list>
+    </div>
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>

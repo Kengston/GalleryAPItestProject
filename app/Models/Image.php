@@ -13,4 +13,6 @@ class Image extends Model
         'file_name',
         'file_path',
     ];
+
+    protected $table = 'image';
 }
