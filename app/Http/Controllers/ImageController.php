@@ -34,7 +34,6 @@ class ImageController extends Controller
             'file_path' => $path,
         ]);
 
-        // Modify file_path to contain the full URL to the image
         $image->file_path = Storage::url($image->file_path);
 
         return response()->json($image, 201);
